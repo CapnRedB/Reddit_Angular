@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="reddit">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.js"></script>
+	  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+	  <script src="app.js"></script>
+	</head>
+	<body ng-controller="RedditC">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<a href="#" class='navbar-brand'>Reddit Again</a>
+				<ul class='nav navbar-nav'>
+					<li><a href="#" ng-click="togglePost()">Submit Post</a></li>
+					<li class='navbar-form'>
+					<div class="form-inline">
+						<input type="text" name="name" placeholder="Search" ng-model="view.search">
+				</div>
+				</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container">
+  <!-- FORMS  -->
+  <form name="postForm" ng-submit="addPost(newPost)" ng-show="view.newPostVisible" class="newForm">
+    <div class="form-group" ng-class="{'has-error': checkForError(postForm.title), 'has-success': postForm.title.$valid }">
+      <label for="title" ng-class="{'text-danger': checkForError(postForm.title), 'text-success': postForm.title.$valid }">Title</label>
+      <input type="text" class="form-control" name="title" placeholder="Title" ng-model="newPost.title" required>
+      <p ng-show="checkForError(postForm.title)" class="help-block">Must have a title!</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': checkForError(postForm.user), 'has-success': postForm.user.$valid }">
+      <label for="user" ng-class="{'text-danger': checkForError(postForm.user), 'text-success': postForm.user.$valid }">Author</label>
+      <input type="text" class="form-control" name="user" placeholder="Author" ng-model="newPost.user" required>
+      <p ng-show="checkForError(postForm.user)" class="help-block">Must have name!</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': checkForError(postForm.image), 'has-success': postForm.image.$valid }">
+      <label for="image" ng-class="{'text-danger': checkForError(postForm.image), 'text-success': postForm.image.$valid }">Image URL</label>
+      <input type="text" class="form-control" name="image" placeholder="Image URL" ng-model="newPost.imgurl" required>
+      <p ng-show="checkForError(postForm.image)" class="help-block">Must have a pic!</p>
+    </div>
+    <div class="form-group" ng-class="{'has-error': checkForError(postForm.description), 'has-success': postForm.description.$valid }">
+      <label for="description" ng-class="{'text-danger': checkForError(postForm.description), 'text-success': postForm.description.$valid }">Description</label>
+      <input type="text" class="form-control" name="description" placeholder="Description" ng-model="newPost.description" required>
+      <p ng-show="checkForError(postForm.description)" class="help-block">Post something!</p>
+    </div>
+    <input type="submit" class="btn btn-default" value="Add Post">
+  </form>
+		<!-- POSTS -->
+		<div class="well" ng-repeat="post in view.posts | orderBy:view.order | filter:view.search">
+			<div class="row">
+	<div class="col-s-2"><img ng-src="{{ post.imgurl }}"></div>
+	<div class="col-s-10">
+		<h4>
+			{{ post.title }} |
+			<span class="glyphicon glyphicon-arrow-up" ng-click="upVote(post)"></span>
+			<span class="glyphicon glyphicon-arrow-down" ng-click="downVote(post)"></span>
+			<span ng-class="upvoteClass(post)">{{ post.likes }}</span>
+		</h4>
+		<p class="pull-right">By {{ post.user }}</p>
+		<p class="clear">{{post.description}}</p>
+			<span class="glyphicon glyphicon-calendar"></span>
+			{{ post.date }} |
+			<span class="hoverable" ng-click="toggleComment(post)">
+				<span class="glyphicon glyphicon-comment"></span>
+				<ng-pluralize count="post.comments.length" when="{1: '1 comment', 'other': '{{ post.comments.length }} comments'}"></ng-pluralize>
+			</span> |
+			<span class="hoverable" ng-click="toggleNewComment(post)">
+				<span class="glyphicon glyphicon-pencil"></span>
+				Add comment
+			</span>
+		</p>
+		<div class="comment" ng-show="post.commentsVisible">
+			<p ng-repeat="comment in post.comments">
+				<strong>{{ comment.user }}</strong> - {{ comment.comment }}
+			</p>
+		</div>
+		<div class="comment" ng-show="post.newCommentVisible">
+			<!-- COMMENTS-->
+			<form class="form-inline" ng-submit="addComment(post, newComment)">
+				<div class="form-group">
+					<label for="user">User</label>
+					<input type="text" placeholder="user" class="form-control" ng-model="newComment.user">
+				</div>
+				<div class="form-group">
+					<label for="text">Comment</label>
+					<input type="text" placeholder="text" class="form-control" ng-model="newComment.comment">
+				</div>
+				<input class="btn btn-success" type="submit" value="Add Comment">
+			</form>
+		</div>
+	</div>
+</div>
+
+
+		</div>
+
+
+	</div>
+	</body>
+</html>
