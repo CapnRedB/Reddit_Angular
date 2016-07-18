@@ -29,22 +29,22 @@
 		<div class="container">
   <!-- FORMS  -->
   <form name="postForm" ng-submit="addPost(newPost)" ng-show="view.newPostVisible" class="newForm">
-    <div class="form-group" ng-class="{'has-error': checkForError(postForm.title), 'has-success': postForm.title.$valid }">
+    <div ng-class="{'has-error': checkForError(postForm.title), 'has-success': postForm.title.$valid }">
       <label for="title" ng-class="{'text-danger': checkForError(postForm.title), 'text-success': postForm.title.$valid }">Title</label>
       <input type="text" class="form-control" name="title" placeholder="Title" ng-model="newPost.title" required>
       <p ng-show="checkForError(postForm.title)" class="help-block">Must have a title!</p>
     </div>
-    <div class="form-group" ng-class="{'has-error': checkForError(postForm.user), 'has-success': postForm.user.$valid }">
+    <div ng-class="{'has-error': checkForError(postForm.user), 'has-success': postForm.user.$valid }">
       <label for="user" ng-class="{'text-danger': checkForError(postForm.user), 'text-success': postForm.user.$valid }">Author</label>
       <input type="text" class="form-control" name="user" placeholder="Author" ng-model="newPost.user" required>
       <p ng-show="checkForError(postForm.user)" class="help-block">Must have name!</p>
     </div>
-    <div class="form-group" ng-class="{'has-error': checkForError(postForm.image), 'has-success': postForm.image.$valid }">
+    <div ng-class="{'has-error': checkForError(postForm.image), 'has-success': postForm.image.$valid }">
       <label for="image" ng-class="{'text-danger': checkForError(postForm.image), 'text-success': postForm.image.$valid }">Image URL</label>
       <input type="text" class="form-control" name="image" placeholder="Image URL" ng-model="newPost.imgurl" required>
       <p ng-show="checkForError(postForm.image)" class="help-block">Must have a pic!</p>
     </div>
-    <div class="form-group" ng-class="{'has-error': checkForError(postForm.description), 'has-success': postForm.description.$valid }">
+    <div ng-class="{'has-error': checkForError(postForm.description), 'has-success': postForm.description.$valid }">
       <label for="description" ng-class="{'text-danger': checkForError(postForm.description), 'text-success': postForm.description.$valid }">Description</label>
       <input type="text" class="form-control" name="description" placeholder="Description" ng-model="newPost.description" required>
       <p ng-show="checkForError(postForm.description)" class="help-block">Post something!</p>
